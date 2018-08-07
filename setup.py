@@ -25,7 +25,7 @@ setup(
     version=VERSION,
     description="Wavefront Python Wrapper for AWS Lambda",
     author_email="",
-    url="https://github.com/wavefrontHQ/python-client/tree/master/wavefront_lambda",
+    url="https://github.com/wavefrontHQ/wavefront-lambda-python",
     keywords=["Wavefront Lambda", "Wavefront"],
     install_requires=REQUIRES,
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
