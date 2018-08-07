@@ -1,4 +1,4 @@
-# wavefront_lambda
+# wavefront-lambda-python [![travis build status](https://travis-ci.com/wavefrontHQ/wavefront-lambda-python.svg?branch=master)](https://travis-ci.com/wavefrontHQ/wavefront-lambda-python)
 
 This is a Wavefront python wrapper for AWS Lambda python function handler to send metrics directly to wavefront.
 
