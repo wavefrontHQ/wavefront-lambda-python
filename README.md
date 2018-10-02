@@ -54,8 +54,8 @@ The Lambda wrapper adds the following point tags to all metrics sent to wavefron
 
 ## Custom Lambda Metrics
 
-The wavefront lambda wrapper reports custom business metrics via a metrics registry provided by the [pyformance plugin](https://github.com/wavefrontHQ/python-client/tree/master/wavefront_pyformance).  
-Please refer to the [code sample](https://github.com/wavefrontHQ/python-client/blob/master/wavefront_lambda/example.py) which shows how you can send custom business metrics to wavefront from your lambda function.
+The wavefront lambda wrapper reports custom business metrics via a metrics registry provided by the [pyformance plugin](https://github.com/wavefrontHQ/wavefront-pyformance).  
+Please refer to the [code sample](https://github.com/wavefrontHQ/wavefront-lambda-python/blob/master/example.py) which shows how you can send custom business metrics to wavefront from your lambda function.
 
 Note: Having the same metric name for any two types of metrics will result in only one time series at the server and thus cause collisions.
 In general, all metric names should be different. In case you have metrics that you want to track as both a Counter and Delta Counter, consider adding a relevant suffix to one of the metrics to differentiate one metric name from another.
