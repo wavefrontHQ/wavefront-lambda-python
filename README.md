@@ -13,8 +13,13 @@ pip install wavefront_lambda
 
 ## Environment variables
 WAVEFRONT_URL = https://\<INSTANCE>.wavefront.com  
-WAVEFRONT_API_TOKEN = Wavefront API token with Direct Data Ingestion permission.  
+WAVEFRONT_API_TOKEN = Wavefront API token with Direct Data Ingestion permission. (not required if using WAVEFRONT_PROXY) 
 REPORT_STANDARD_METRICS = Set to False or false to not report standard lambda metrics directly to wavefront.  
+
+WAVEFRONT_PROXY = If this environment exist and set to any non-zero value. Will use wavefront proxy. (WAVEFRONT_URL need to set to wavefront proxy hostname)
+
+WAVEFRONT_PORT # wavefront proxy port. default 2878
+
 
 ## Usage
 

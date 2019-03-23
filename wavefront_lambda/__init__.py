@@ -1,4 +1,4 @@
-from wavefront_pyformance.wavefront_reporter import WavefrontDirectReporter
+from wavefront_pyformance.wavefront_reporter import WavefrontDirectReporter, WavefrontProxyReporter
 from pyformance import MetricsRegistry
 import os
 from datetime import datetime
@@ -7,6 +7,18 @@ from wavefront_pyformance import delta
 is_cold_start = True
 reg = None
 
+
+def create_endpoint(server, token, port, proxy, registry, source, tags, prefix=""):
+    """
+    support both WavefrontDirectReporter and WavefrontProxyReporter
+    based on proxy (boolean)
+    """
+
+    if proxy:
+        return WavefrontProxyReporter(host=server, port=port, registry=registry,
+                                      source=source, tags=tags, prefix=prefix)
+    return WavefrontDirectReporter(server=server, token=token, registry=registry,
+                                   source=source, tags=tags, prefix=prefix)
 
 def wrapper(func):
     """
@@ -62,9 +74,22 @@ def wrapper(func):
         server = os.environ.get('WAVEFRONT_URL')
         if not server:
             raise ValueError("Environment variable WAVEFRONT_URL is not set.")
-        auth_token = os.environ.get('WAVEFRONT_API_TOKEN')
-        if not auth_token:
-            raise ValueError("Environment variable WAVEFRONT_API_TOKEN is not set.")
+        proxy = False
+        try:
+            int(os.getenv('WAVEFRONT_PROXY', "0"))
+        except ValueError:
+            pass
+        finally:
+            proxy = bool(proxy)
+        # WAVEFRONT_PORT PORT default 2878
+        port = 2878
+        auth_token = None
+        if proxy:
+            port = os.environ.get("WAVEFRONT_PORT", port)
+        else:
+            auth_token = os.environ.get('WAVEFRONT_API_TOKEN')
+            if auth_token is None:
+                raise ValueError("Environment variable WAVEFRONT_API_TOKEN is not set.")
         is_report_standard_metrics = True
         if os.environ.get('REPORT_STANDARD_METRICS') in ['False', 'false']:
             is_report_standard_metrics = False
@@ -95,19 +120,16 @@ def wrapper(func):
         reg = MetricsRegistry()
 
         # Initialize the wavefront direct reporter
-        wf_direct_reporter = WavefrontDirectReporter(server=server,
-                                                     token=auth_token,
-                                                     registry=reg,
-                                                     source=point_tags['FunctionName'],
-                                                     tags=point_tags,
-                                                     prefix="")
-
+        wf_reporter = create_endpoint(server=server, token=auth_token, port=port,
+                                             proxy=proxy, registry=reg,
+                                             source=point_tags['FunctionName'],
+                                             tags=point_tags)
         if is_report_standard_metrics:
-            call_lambda_with_standard_metrics(wf_direct_reporter,
+            call_lambda_with_standard_metrics(wf_reporter,
                                               *args,
                                               **kwargs)
         else:
-            call_lambda_without_standard_metrics(wf_direct_reporter,
+            call_lambda_without_standard_metrics(wf_reporter,
                                                  *args,
                                                  **kwargs)
 
