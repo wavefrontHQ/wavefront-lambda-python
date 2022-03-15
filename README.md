@@ -3,7 +3,7 @@
 This is a Wavefront python wrapper for AWS Lambda python function handler to send metrics directly to wavefront.
 
 ## Requirements
-Python 2.7 or 3.6.
+Python 3.6 or above
 
 ## Installation
 To install from PyPi
