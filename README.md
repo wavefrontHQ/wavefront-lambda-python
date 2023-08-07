@@ -1,3 +1,7 @@
+> **Warning**
+>
+> VMware has ended active development of this project. this repository will no longer be updated.
+
 # wavefront-lambda-python [![travis build status](https://travis-ci.com/wavefrontHQ/wavefront-lambda-python.svg?branch=master)](https://travis-ci.com/wavefrontHQ/wavefront-lambda-python)
 
 This is a Wavefront python wrapper for AWS Lambda python function handler to send metrics directly to wavefront.
